@@ -1,0 +1,31 @@
+{
+  "name": "@inharul/create-electron-app",
+  "version": "0.0.1",
+  "description": "A cli to get started with an electron project",
+  "main": "./dist/index.js",
+  "bin": {
+    "@inharul/create-electron-app": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "ncc build ./index.ts -o ./dist/ --minify --no-cache",
+    "start": "ncc build ./index.ts -o ./dist/ && node ./dist/index.js",
+    "dev": "ncc build ./index.ts -w -o dist/",
+    "test": "node ./dist/index.js"
+  },
+  "keywords": [
+    "electron",
+    "cli"
+  ],
+  "author": "Inharul",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/cross-spawn": "^6.0.6",
+    "@types/node": "^22.13.17",
+    "@types/prompts": "^2.4.9",
+    "commander": "^13.1.0",
+    "cross-spawn": "^7.0.6",
+    "handlebars": "^4.7.8",
+    "picocolors": "^1.1.1",
+    "prompts": "^2.4.2"
+  }
+}
