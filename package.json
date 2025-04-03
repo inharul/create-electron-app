@@ -27,5 +27,9 @@
     "handlebars": "^4.7.8",
     "picocolors": "^1.1.1",
     "prompts": "^2.4.2"
+  },
+  "dependencies": {
+    "@malept/cross-spawn-promise": "^2.0.0",
+    "username": "^7.0.0"
   }
 }
