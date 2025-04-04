@@ -47,11 +47,12 @@ export const configQuestions: PromptObject[] = [
         value: "react",
       },
       { title: "Vue 3", value: "vue" },
+      { title: "Svelte", value: "svelte" },
     ],
   }, // react, vue
   {
     type: "select",
-    name: "tool",
+    name: "needsTools",
     message: "Do you need any other tools?",
     choices: [
       { title: "No", value: false },
@@ -69,7 +70,7 @@ export const configQuestions: PromptObject[] = [
     hint: `- Space for toggling selections then Return to submit.`,
     instructions: false,
     choices: [
-      { title: "TailwindCSS", value: "tailwind" },
+      { title: "TailwindCSS", value: "tailwindcss" },
       { title: "ESLint", value: "eslint" },
     ],
   }, // tailwind, eslint
@@ -77,6 +78,7 @@ export const configQuestions: PromptObject[] = [
     type: "toggle",
     name: "git",
     message: "Intialize a git repository?",
+    initial: "Yes",
     active: "Yes",
     inactive: "No",
   },
