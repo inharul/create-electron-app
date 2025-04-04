@@ -4,9 +4,9 @@ import prompts from 'prompts';
 // import Handlebars from 'handlebars';
 // import spawn from 'cross-spawn';
 import { Command, OptionValues } from 'commander';
-import { configQuestions } from './helper/questions.js';
-import type { PackageManager } from './helper/pkgManager.js';
-import { getPkgManager } from './helper/pkgManager.js';
+import { configQuestions } from './helper/questions';
+import type { PackageManager } from './helper/pkgManager';
+import { getPkgManager } from './helper/pkgManager';
 import { bold, red, blue } from 'picocolors';
 import { resolve } from 'path';
 import {
@@ -14,12 +14,14 @@ import {
   resolveProjectPath,
 } from './helper/ensureProjectFolder.js';
 import pkgJson from './package.json';
+import { createApp } from './create';
 
 // Handle Cli
-type Framework = 'react' | 'vue' | 'svelte' | null;
 
 let projectName: string;
 let appPath: string;
+export type Framework = 'react' | 'vue' | 'svelte' | null;
+
 const program = new Command();
 
 program
@@ -137,11 +139,11 @@ program
 
     if (!hasOpts) {
       // No arguments or options: trigger prompt directly
-      await runAllPrompts();
+      await runAllPrompts(projectName, appPath, packageManager);
     } else {
       // Handle cases where options are provided (optional over
       console.log('implementation pending');
-      await runWithOptions(opts);
+      await runWithOptions(opts, projectName, appPath, packageManager);
       // await runWithOptions(projectName, opts); // Use provided options
     }
   })
@@ -152,7 +154,11 @@ program
 // const templateSource = readFileSync('./template/test.handlebars', 'utf-8');
 // const template = Handlebars.compile(templateSource);
 
-async function runAllPrompts(): Promise<void> {
+async function runAllPrompts(
+  projectName: string,
+  appPath: string,
+  packageManager: PackageManager
+): Promise<void> {
   const response = await prompts(configQuestions, {
     onCancel: () => {
       console.log(red('[Cancelled] - Exiting.'));
@@ -171,9 +177,26 @@ async function runAllPrompts(): Promise<void> {
     eslint = response.tools.includes('eslint');
   }
   console.log(typescript, bundler, framework, tailwind, eslint, git);
+
+  createApp({
+    projectName,
+    appPath,
+    packageManager,
+    typescript,
+    bundler,
+    framework,
+    tailwind,
+    eslint,
+    git,
+  });
 }
 
-async function runWithOptions(opts: OptionValues): Promise<void> {
+async function runWithOptions(
+  opts: OptionValues,
+  projectName: string,
+  appPath: string,
+  packageManager: PackageManager
+): Promise<void> {
   let typescript;
   let bundler;
   let framework: Framework;
@@ -228,8 +251,19 @@ async function runWithOptions(opts: OptionValues): Promise<void> {
   }
 
   // Ask for git
-  const git = (await prompts(configQuestions[6])).git;
+  const git: boolean = (await prompts(configQuestions[6])).git;
   console.log(typescript, bundler, framework, tailwind, eslint, git);
+  createApp({
+    projectName,
+    appPath,
+    packageManager,
+    typescript,
+    bundler,
+    framework,
+    tailwind,
+    eslint,
+    git,
+  });
 }
 
 // console.log(`hello from ${pc.bgBlue(pc.white("Typescript"))}`);

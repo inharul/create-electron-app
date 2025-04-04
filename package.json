@@ -22,10 +22,13 @@
   "license": "MIT",
   "devDependencies": {
     "@types/cross-spawn": "^6.0.6",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^22.13.17",
     "@types/prompts": "^2.4.9",
     "commander": "^13.1.0",
     "cross-spawn": "^7.0.6",
+    "fast-glob": "^3.3.3",
+    "fs-extra": "^11.3.0",
     "handlebars": "^4.7.8",
     "picocolors": "^1.1.1",
     "prompts": "^2.4.2"
