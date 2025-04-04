@@ -1,22 +1,22 @@
 #!/usr/bin/env node
-// import { readFileSync, writeFileSync } from 'fs';
 import prompts from 'prompts';
+// import { readFileSync, writeFileSync } from 'fs';
 // import Handlebars from 'handlebars';
 // import spawn from 'cross-spawn';
 import { Command, OptionValues } from 'commander';
-import { configQuestions } from './helper/questions';
-import type { PackageManager } from './helper/pkgManager';
-import { getPkgManager } from './helper/pkgManager';
+import { configQuestions } from './helper/questions.js';
+import type { PackageManager } from './helper/pkgManager.js';
+import { getPkgManager } from './helper/pkgManager.js';
 import { bold, red, blue } from 'picocolors';
 import { resolve } from 'path';
 import {
   isFolderEmpty,
   resolveProjectPath,
-} from './helper/ensureProjectFolder';
+} from './helper/ensureProjectFolder.js';
 import pkgJson from './package.json';
 
 // Handle Cli
-type Framework = "react" | "vue" | "svelte" | null;
+type Framework = 'react' | 'vue' | 'svelte' | null;
 
 let projectName: string;
 let appPath: string;
@@ -67,12 +67,12 @@ program
     const packageManager: PackageManager = !!opts.useNpm
       ? 'npm'
       : !!opts.usePnpm
-        ? 'pnpm'
-        : !!opts.useYarn
-          ? 'yarn'
-          : !!opts.useBun
-            ? 'bun'
-            : getPkgManager();
+      ? 'pnpm'
+      : !!opts.useYarn
+      ? 'yarn'
+      : !!opts.useBun
+      ? 'bun'
+      : getPkgManager();
 
     console.log(packageManager);
 
@@ -91,7 +91,7 @@ program
           // Only projectName question
           onCancel: () => {
             console.error('[Interruption] - Exiting.');
-            process.exit(1)
+            process.exit(1);
           },
         }
       );
@@ -118,8 +118,8 @@ program
             return isFolderEmpty(resolvedPath)
               ? true
               : `Directory ${bold(
-                resolvedPath
-              )} also already exists and is not empty.`;
+                  resolvedPath
+                )} also already exists and is not empty.`;
           },
         },
         {
@@ -167,16 +167,13 @@ async function runAllPrompts(): Promise<void> {
   let { typescript, bundler, needsFramework, needsTools, git } = response;
   let framework: Framework = needsFramework ? response.framework : null;
   if (needsTools && response.tools !== undefined) {
-    tailwind = response.tools.includes("tailwindcss");
-    eslint = response.tools.includes("eslint");
+    tailwind = response.tools.includes('tailwindcss');
+    eslint = response.tools.includes('eslint');
   }
   console.log(typescript, bundler, framework, tailwind, eslint, git);
-
-
 }
 
 async function runWithOptions(opts: OptionValues): Promise<void> {
-
   let typescript;
   let bundler;
   let framework: Framework;
@@ -197,28 +194,32 @@ async function runWithOptions(opts: OptionValues): Promise<void> {
     bundler = (await prompts(configQuestions[1])).bundler;
   } else {
     // If one of them is true
-    bundler = !opts.webpack ? "webpack" : "vite";
+    bundler = !opts.webpack ? 'webpack' : 'vite';
   }
 
   // <Check framework>
   if (!opts.react && !opts.vue && !opts.svelte) {
-    const frameworkResponse = await prompts([configQuestions[2], configQuestions[3]])
-    frameworkResponse.needsFramework ? framework = frameworkResponse.framework : framework = null
+    const frameworkResponse = await prompts([
+      configQuestions[2],
+      configQuestions[3],
+    ]);
+    frameworkResponse.needsFramework
+      ? (framework = frameworkResponse.framework)
+      : (framework = null);
   } else {
     // If one of them is true, set the framework based on opts
-    framework = opts.react ? "react" : opts.vue ? "vue" : "svelte";
+    framework = opts.react ? 'react' : opts.vue ? 'vue' : 'svelte';
   }
 
   // <Check if any tools were passed>
   if (!opts.tailwind && !opts.eslint) {
     const toolChoices = await prompts([configQuestions[4], configQuestions[5]]);
-    console.log("needstool value", toolChoices.needsTools);
+    console.log('needstool value', toolChoices.needsTools);
 
     if (toolChoices.needsTools) {
-      tailwind = toolChoices.tools.includes("tailwindcss");
-      eslint = toolChoices.tools.includes("eslint");
-      console.log("tailwind and es conditions", tailwind, eslint);
-
+      tailwind = toolChoices.tools.includes('tailwindcss');
+      eslint = toolChoices.tools.includes('eslint');
+      console.log('tailwind and es conditions', tailwind, eslint);
     }
   } else {
     // If one of them is true
@@ -227,9 +228,8 @@ async function runWithOptions(opts: OptionValues): Promise<void> {
   }
 
   // Ask for git
-  const git = (await prompts(configQuestions[6])).git
+  const git = (await prompts(configQuestions[6])).git;
   console.log(typescript, bundler, framework, tailwind, eslint, git);
-
 }
 
 // console.log(`hello from ${pc.bgBlue(pc.white("Typescript"))}`);
