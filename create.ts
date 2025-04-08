@@ -1,4 +1,4 @@
-import { copyFile, existsSync, mkdir } from 'fs-extra'; // Replace fs import
+import { mkdir } from 'fs-extra'; // Replace fs import
 import { dirname, join } from 'node:path';
 import { green } from 'picocolors';
 import type { Framework } from './index';
@@ -27,7 +27,7 @@ export async function createApp({
   eslint: boolean;
   git: boolean;
 }): Promise<void> {
-  console.log(appPath);
+  // console.log(appPath);
   if (!(await isWriteable(dirname(appPath)))) {
     console.error(
       'The application path is not writable, please check folder permissions and try again.'

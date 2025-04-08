@@ -64,7 +64,7 @@ program
     // opts.OptionValue can be `undefined` if not passed
     // for undefined cases, !!undefined = false
     // for passed cases, !!true = true
-    console.log(!!opts.skipInstall);
+    // console.log(!!opts.skipInstall);
 
     const packageManager: PackageManager = !!opts.useNpm
       ? 'npm'
@@ -76,11 +76,11 @@ program
       ? 'bun'
       : getPkgManager();
 
-    console.log(packageManager);
+    // console.log(packageManager);
 
     if (args.length > 0) {
       projectName = args[0]; // Use the first argument as project name
-      console.log(projectName);
+      // console.log(projectName);
     } else {
       const nameResponse = await prompts(
         {
@@ -142,7 +142,7 @@ program
       await runAllPrompts(projectName, appPath, packageManager);
     } else {
       // Handle cases where options are provided (optional over
-      console.log('implementation pending');
+      // console.log('implementation pending');
       await runWithOptions(opts, projectName, appPath, packageManager);
       // await runWithOptions(projectName, opts); // Use provided options
     }
@@ -176,7 +176,7 @@ async function runAllPrompts(
     tailwind = response.tools.includes('tailwindcss');
     eslint = response.tools.includes('eslint');
   }
-  console.log(typescript, bundler, framework, tailwind, eslint, git);
+  // console.log(typescript, bundler, framework, tailwind, eslint, git);
 
   createApp({
     projectName,
@@ -237,12 +237,12 @@ async function runWithOptions(
   // <Check if any tools were passed>
   if (!opts.tailwind && !opts.eslint) {
     const toolChoices = await prompts([configQuestions[4], configQuestions[5]]);
-    console.log('needstool value', toolChoices.needsTools);
+    // console.log('needstool value', toolChoices.needsTools);
 
     if (toolChoices.needsTools) {
       tailwind = toolChoices.tools.includes('tailwindcss');
       eslint = toolChoices.tools.includes('eslint');
-      console.log('tailwind and es conditions', tailwind, eslint);
+      // console.log('tailwind and es conditions', tailwind, eslint);
     }
   } else {
     // If one of them is true
@@ -252,7 +252,7 @@ async function runWithOptions(
 
   // Ask for git
   const git: boolean = (await prompts(configQuestions[6])).git;
-  console.log(typescript, bundler, framework, tailwind, eslint, git);
+  // console.log(typescript, bundler, framework, tailwind, eslint, git);
   createApp({
     projectName,
     appPath,

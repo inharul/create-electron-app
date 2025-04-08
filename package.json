@@ -1,12 +1,11 @@
 {
   "name": "@inharul/create-electron-app",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A cli to get started with an electron project",
   "main": "./dist/index.js",
   "type": "module",
   "bin": {
-    "@inharul/create-electron-app": "./dist/cli.js",
-    "create-electron-app": "./dist/cli.js"
+    "create-electron-app": "dist/cli.js"
   },
   "scripts": {
     "build": "ncc build ./index.ts -o ./dist/ --minify --no-cache -m",
